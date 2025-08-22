@@ -105,6 +105,7 @@ public class BinlogConnectorReplicatorTest extends TestWithNameLogging {
 			null,
 			context.getFilter(),
 			new MaxwellOutputConfig(),
+            null,
 			context.getConfig().bufferMemoryUsage,
 			1
 		);
@@ -177,6 +178,7 @@ public class BinlogConnectorReplicatorTest extends TestWithNameLogging {
 				null,
 				context.getFilter(),
 				new MaxwellOutputConfig(),
+                null,
 				context.getConfig().bufferMemoryUsage,
 				1
 		);
@@ -226,6 +228,7 @@ public class BinlogConnectorReplicatorTest extends TestWithNameLogging {
 				null,
 				context.getFilter(),
 				new MaxwellOutputConfig(),
+                null,
 				context.getConfig().bufferMemoryUsage,
 				0 //0 = unlimited
 		);
@@ -292,6 +295,7 @@ public class BinlogConnectorReplicatorTest extends TestWithNameLogging {
 				null,
 				context.getFilter(),
 				new MaxwellOutputConfig(),
+                null,
 				context.getConfig().bufferMemoryUsage,
 				3
 		);
@@ -341,6 +345,7 @@ public class BinlogConnectorReplicatorTest extends TestWithNameLogging {
 				null,
 				context.getFilter(),
 				new MaxwellOutputConfig(),
+                null,
 				context.getConfig().bufferMemoryUsage,
 				3);
 		replicator.startReplicator();

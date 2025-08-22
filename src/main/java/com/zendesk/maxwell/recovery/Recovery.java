@@ -75,6 +75,7 @@ public class Recovery {
 					null,
 					new RecoveryFilter(this.maxwellDatabaseName),
 					new MaxwellOutputConfig(),
+                    null,
 					0.25f, // Default memory usage size, not used
 					1
 			);

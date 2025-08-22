@@ -12,6 +12,7 @@ import com.zendesk.maxwell.replication.Replicator;
 import com.zendesk.maxwell.row.HeartbeatRowMap;
 import com.zendesk.maxwell.schema.*;
 import com.zendesk.maxwell.schema.columndef.ColumnDefCastException;
+import com.zendesk.maxwell.util.CronProperties;
 import com.zendesk.maxwell.util.Logging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -287,6 +288,7 @@ public class Maxwell implements Runnable {
 			context.getFilter(),
 			context.getConfig().getIgnoreMissingSchema(),
 			config.outputConfig,
+            CronProperties.create(context, config.cronMaxHeartbeatsWithoutData, config.cronMaxSecondsRunning),
 			config.bufferMemoryUsage,
 			config.replicationReconnectionRetries,
 			config.binlogEventQueueSize

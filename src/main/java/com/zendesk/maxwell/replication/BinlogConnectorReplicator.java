@@ -26,6 +26,7 @@ import com.zendesk.maxwell.schema.columndef.ColumnDefCastException;
 import com.zendesk.maxwell.schema.ddl.DDLMap;
 import com.zendesk.maxwell.schema.ddl.ResolvedSchemaChange;
 import com.zendesk.maxwell.scripting.Scripting;
+import com.zendesk.maxwell.util.CronProperties;
 import com.zendesk.maxwell.util.RunLoopProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +87,8 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 
 	private boolean isConnected = false;
 
+    private final CronProperties cron;
+
 	private class ClientReconnectedException extends Exception {}
 
 	public BinlogConnectorReplicator(
@@ -103,6 +106,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 			Scripting scripting,
 			Filter filter,
 			MaxwellOutputConfig outputConfig,
+			CronProperties cron,
 			float bufferMemoryUsage,
 			int replicationReconnectionRetries
 	) {
@@ -122,6 +126,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 				filter,
 				false,
 				outputConfig,
+				cron,
 				bufferMemoryUsage,
 				replicationReconnectionRetries,
 				BINLOG_QUEUE_SIZE
@@ -144,6 +149,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 		Filter filter,
 		boolean ignoreMissingSchema,
 		MaxwellOutputConfig outputConfig,
+		CronProperties cron,
 		float bufferMemoryUsage,
 		int replicationReconnectionRetries,
 		int binlogEventQueueSize
@@ -159,6 +165,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 		this.schemaStore = schemaStore;
 		this.tableCache = new TableCache(maxwellSchemaDatabaseName);
 		this.filter = filter;
+		this.cron = cron;
 		this.ignoreMissingSchema = ignoreMissingSchema;
 		this.lastCommError = null;
 		this.bufferMemoryUsage = bufferMemoryUsage;
@@ -239,8 +246,11 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 		if ( row == null )
 			return;
 
-		rowCounter.inc();
+		if (cron == null || !(row instanceof HeartbeatRowMap))
+			rowCounter.inc();
 		rowMeter.mark();
+
+		cron.checkTerminate(row, rowCounter);
 
 		if ( scripting != null && !isMaxwellRow(row))
 			scripting.invoke(row);

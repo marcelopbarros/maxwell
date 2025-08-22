@@ -15,6 +15,7 @@ import com.zendesk.maxwell.replication.BinlogPosition;
 import com.zendesk.maxwell.replication.Position;
 import com.zendesk.maxwell.scripting.Scripting;
 import com.zendesk.maxwell.util.AbstractConfig;
+import com.zendesk.maxwell.util.CronProperties;
 import com.zendesk.maxwell.util.MaxwellOptionParser;
 import joptsimple.OptionSet;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -640,6 +641,16 @@ public class MaxwellConfig extends AbstractConfig {
 	public String jgroupsConf;
 
 	/**
+	 * When running in cron, how many heartbeats we can receive without receiving any other message. A value of 0 means disabled.
+	 */
+	public Integer cronMaxHeartbeatsWithoutData;
+
+	/**
+	 * When running in cron, how many seconds the application.
+	 */
+	public Integer cronMaxSecondsRunning;
+
+	/**
 	 * Defines membership within a HA cluster
 	 */
 	public String raftMemberID;
@@ -705,6 +716,11 @@ public class MaxwellConfig extends AbstractConfig {
 
 		parser.accepts( "binlog_heartbeat", "enable binlog replication heartbeats, default false" )
 				.withOptionalArg().ofType(Boolean.class);
+
+		parser.accepts( "cron_max_heartbeats_without_data", "max heartbeats without data before exiting. default: DISABLED" )
+				.withOptionalArg().ofType(Integer.class);
+		parser.accepts( "cron_max_seconds_running", "max seconds running before exiting. default: DISABLED" )
+				.withOptionalArg().ofType(Integer.class);
 
 		parser.accepts( "jdbc_options", "additional jdbc connection options: key1=val1&key2=val2" )
 				.withRequiredArg();
@@ -1077,6 +1093,9 @@ public class MaxwellConfig extends AbstractConfig {
 
 		this.databaseName       = fetchStringOption("schema_database", options, properties, "maxwell");
 		this.maxwellMysql.database = this.databaseName;
+
+        this.cronMaxHeartbeatsWithoutData = fetchIntegerOption("cron_max_heartbeats_without_data", options, properties, CronProperties.DEFAULT_VALUE);
+		this.cronMaxSecondsRunning = fetchIntegerOption("cron_max_seconds_running", options, properties, CronProperties.DEFAULT_VALUE);
 
 		this.producerFactory    = fetchProducerFactory(options, properties);
 		this.producerType       = fetchStringOption("producer", options, properties, "stdout");
