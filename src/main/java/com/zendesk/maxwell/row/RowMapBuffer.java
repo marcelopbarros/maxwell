@@ -11,6 +11,7 @@ public class RowMapBuffer extends ListWithDiskBuffer<RowMap> {
 	private static long FlushOutputStreamBytes = 10000000;
 	private Long xid;
 	private Long xoffset = 0L;
+	private String clientId;
 	private Long serverId;
 	private Long threadId;
 	private Long schemaId;
@@ -66,6 +67,7 @@ public class RowMapBuffer extends ListWithDiskBuffer<RowMap> {
 		RowMap r = super.removeFirst(RowMap.class);
 		r.setXid(this.xid);
 		r.setXoffset(this.xoffset++);
+		r.setClientId(this.clientId);
 		r.setServerId(this.serverId);
 		r.setThreadId(this.threadId);
 		r.setSchemaId(this.schemaId);
@@ -75,6 +77,10 @@ public class RowMapBuffer extends ListWithDiskBuffer<RowMap> {
 
 	public void setXid(Long xid) {
 		this.xid = xid;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public void setServerId(Long serverId) {

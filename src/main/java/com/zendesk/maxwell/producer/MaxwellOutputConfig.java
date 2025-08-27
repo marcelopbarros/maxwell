@@ -11,6 +11,7 @@ public class MaxwellOutputConfig {
 	public boolean includesCommitInfo;
 	public boolean includesXOffset;
 	public boolean includesNulls;
+	public boolean includesClientId;
 	public boolean includesServerId;
 	public boolean includesThreadId;
 	public boolean includesSchemaId;
@@ -31,6 +32,7 @@ public class MaxwellOutputConfig {
 		this.includesGtidPosition = false;
 		this.includesCommitInfo = true;
 		this.includesNulls = true;
+		this.includesClientId = false;
 		this.includesServerId = false;
 		this.includesThreadId = false;
 		this.includesSchemaId = false;

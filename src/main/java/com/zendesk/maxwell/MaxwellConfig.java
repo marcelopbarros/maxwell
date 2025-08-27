@@ -781,6 +781,8 @@ public class MaxwellConfig extends AbstractConfig {
 			.withOptionalArg().ofType(Boolean.class);
 		parser.accepts( "output_nulls", "include data fields with NULL values. default: true" )
 			.withOptionalArg().ofType(Boolean.class);
+		parser.accepts( "output_client_id", "include 'client_id' field. default: false" )
+			.withOptionalArg().ofType(Boolean.class);
 		parser.accepts( "output_server_id", "include 'server_id' field. default: false" )
 			.withOptionalArg().ofType(Boolean.class);
 		parser.accepts( "output_thread_id", "include 'thread_id' (client thread_id) field. default: false" )
@@ -1248,6 +1250,7 @@ public class MaxwellConfig extends AbstractConfig {
 		outputConfig.includesCommitInfo = fetchBooleanOption("output_commit_info", options, properties, true);
 		outputConfig.includesXOffset = fetchBooleanOption("output_xoffset", options, properties, true);
 		outputConfig.includesNulls = fetchBooleanOption("output_nulls", options, properties, true);
+		outputConfig.includesClientId = fetchBooleanOption("output_client_id", options, properties, false);
 		outputConfig.includesServerId = fetchBooleanOption("output_server_id", options, properties, false);
 		outputConfig.includesThreadId = fetchBooleanOption("output_thread_id", options, properties, false);
 		outputConfig.includesSchemaId = fetchBooleanOption("output_schema_id", options, properties, false);

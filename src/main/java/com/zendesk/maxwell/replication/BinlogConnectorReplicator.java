@@ -250,7 +250,8 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 			rowCounter.inc();
 		rowMeter.mark();
 
-		cron.checkTerminate(row, rowCounter);
+		if (cron != null)
+			cron.checkTerminate(row, rowCounter);
 
 		if ( scripting != null && !isMaxwellRow(row))
 			scripting.invoke(row);
@@ -741,6 +742,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 							rowBuffer = null;
 							break;
 						}
+						rowBuffer.setClientId(clientID);
 						rowBuffer.setServerId(event.getEvent().getHeader().getServerId());
 						rowBuffer.setThreadId(qe.getThreadId());
 						rowBuffer.setSchemaId(getSchemaId());
@@ -760,6 +762,7 @@ public class BinlogConnectorReplicator extends RunLoopProcess implements Replica
 							rowBuffer = null;
 							break;
 						}
+						rowBuffer.setClientId(clientID);
 						rowBuffer.setServerId(event.getEvent().getHeader().getServerId());
 						rowBuffer.setSchemaId(getSchemaId());
 					}

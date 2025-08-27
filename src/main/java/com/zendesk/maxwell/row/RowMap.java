@@ -46,6 +46,7 @@ public class RowMap implements Serializable {
 	private Long xid;
 	private Long xoffset;
 	private boolean txCommit;
+	private String clientId;
 	private Long serverId;
 	private Long threadId;
 	private Long schemaId;
@@ -145,6 +146,10 @@ public class RowMap implements Serializable {
 		JsonGenerator g = json.reset();
 
 		g.writeStartObject(); // start of row {
+
+		if ( outputConfig.includesClientId && this.clientId != null && !this.clientId.isEmpty() ) {
+			g.writeStringField(fieldNameStrategy.apply(FieldNames.CLIENT_ID), this.clientId);
+		}
 
 		g.writeStringField(fieldNameStrategy.apply(FieldNames.DATABASE), this.database);
 		g.writeStringField(fieldNameStrategy.apply(FieldNames.TABLE), this.table);
@@ -348,6 +353,14 @@ public class RowMap implements Serializable {
 
 	public boolean isTXCommit() {
 		return this.txCommit;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public Long getServerId() {

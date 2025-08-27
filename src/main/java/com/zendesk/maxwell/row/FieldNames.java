@@ -17,6 +17,7 @@ public class FieldNames {
 	public static final String POSITION = "position";
 	public static final String PUSH_TS = "push_ts";
 	public static final String QUERY = "query";
+	public static final String CLIENT_ID = "server";
 	public static final String SERVER_ID = "server_id";
 	public static final String TABLE = "table";
 	public static final String THREAD_ID = "thread_id";
@@ -32,7 +33,7 @@ public class FieldNames {
 	public static final String COMMENT = "comment";
 
 	private static List<String> fieldNamesList = Arrays.asList(COMMIT, DATA, DATABASE,
-	GTID, OLD, POSITION, PRIMARY_KEY, PRIMARY_KEY_COLUMNS, QUERY, SERVER_ID, TABLE, THREAD_ID, TIMESTAMP, TRANSACTION_ID, TYPE, UUID, COMMENT);
+	GTID, OLD, POSITION, PRIMARY_KEY, PRIMARY_KEY_COLUMNS, QUERY, CLIENT_ID, SERVER_ID, TABLE, THREAD_ID, TIMESTAMP, TRANSACTION_ID, TYPE, UUID, COMMENT);
 
 	private static final Set<String> fieldNamesSet = new HashSet<>(fieldNamesList);
 
